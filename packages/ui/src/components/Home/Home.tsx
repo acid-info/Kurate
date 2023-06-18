@@ -1,14 +1,14 @@
-import useProfile from "@/hooks/useProfile";
 import styled from "@emotion/styled";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import HeaderTop from "../HeaderTop/Header.Top";
 import Divider from "../Divider/Divider";
+import { useProfileContext } from "@/context/ProfileContext";
 
 const Home: NextPage = () => {
   const router = useRouter();
   const showChat: boolean = router.pathname.includes("/chat");
-  const { profile, setProfile } = useProfile();
+  const { profile, updateProfile } = useProfileContext();
 
   return (
     <div>

@@ -3,6 +3,10 @@ import { defaultThemes, ThemeProvider } from "@acid-info/lsd-react";
 import { css, Global } from "@emotion/react";
 import Head from "next/head";
 import useIsDarkState from "@/hooks/useIsDarkState";
+import { ProfileProvider } from "@/context/ProfileContext";
+import { ChatProvider } from "@/context/ChatContext";
+import { PostProvider } from "@/context/PostContext";
+import { PersonaProvider } from "@/context/PersonaContext";
 
 export default function App({ Component, pageProps }: AppProps) {
   const { isDarkState } = useIsDarkState();
@@ -53,7 +57,15 @@ export default function App({ Component, pageProps }: AppProps) {
           }
         `}
       />
-      <Component {...pageProps} />
+      <ProfileProvider>
+        <PostProvider>
+          <PersonaProvider>
+            <ChatProvider>
+              <Component {...pageProps} />
+            </ChatProvider>
+          </PersonaProvider>
+        </PostProvider>
+      </ProfileProvider>
     </ThemeProvider>
   );
 }
