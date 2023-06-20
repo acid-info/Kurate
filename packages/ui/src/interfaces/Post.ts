@@ -13,14 +13,13 @@ export interface PostPending extends Post {
   yourVote?: "+" | "-";
 }
 
+export interface PostInfo {
+  approved: Post[];
+  pending: PostPending[];
+  loading: boolean;
+  error?: Error;
+}
+
 export interface PostData {
-  postData: Map<
-    string,
-    {
-      approved: Post[];
-      pending: PostPending[];
-      loading: boolean;
-      error?: Error;
-    }
-  >;
+  postData: Map<string, PostInfo>;
 }

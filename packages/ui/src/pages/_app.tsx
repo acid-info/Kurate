@@ -7,6 +7,8 @@ import { ProfileProvider } from "@/context/ProfileContext";
 import { ChatProvider } from "@/context/ChatContext";
 import { PostProvider } from "@/context/PostContext";
 import { PersonaProvider } from "@/context/PersonaContext";
+import { HistoryProvider } from "@/context/HistoryContext";
+import { TokenProvider } from "@/context/TokenContext";
 
 export default function App({ Component, pageProps }: AppProps) {
   const { isDarkState } = useIsDarkState();
@@ -61,7 +63,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <PostProvider>
           <PersonaProvider>
             <ChatProvider>
-              <Component {...pageProps} />
+              <HistoryProvider>
+                <TokenProvider>
+                  <Component {...pageProps} />
+                </TokenProvider>
+              </HistoryProvider>
             </ChatProvider>
           </PersonaProvider>
         </PostProvider>

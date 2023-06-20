@@ -1,29 +1,25 @@
-import { Post, PostData, PostPending } from "@/interfaces/Post";
+import { Post, PostData, PostInfo, PostPending } from "@/interfaces/Post";
 import { createContext, useContext, useState } from "react";
 
 interface PostContext extends PostData {
+  updatePostData: (newPostData: Map<string, PostInfo>) => void;
   addPending: (post: PostPending, groupId: string) => void;
   addApproved: (post: Post, groupId: string) => void;
 }
 
 const PostContext = createContext<PostContext>({
   postData: new Map(),
+  updatePostData: () => {},
   addPending: () => {},
   addApproved: () => {},
 });
 
 export const PostProvider = ({ children }: any) => {
-  const [postData, setPostData] = useState<
-    Map<
-      string,
-      {
-        approved: Post[];
-        pending: PostPending[];
-        loading: boolean;
-        error?: Error;
-      }
-    >
-  >(new Map());
+  const [postData, setPostData] = useState<Map<string, PostInfo>>(new Map());
+
+  const updatePostData = (newPostData: Map<string, PostInfo>) => {
+    setPostData(newPostData);
+  };
 
   const addPending = (post: PostPending, groupId: string) => {
     setPostData((prevData) => {
@@ -63,6 +59,7 @@ export const PostProvider = ({ children }: any) => {
 
   const postContext: PostContext = {
     postData,
+    updatePostData,
     addPending,
     addApproved,
   };
