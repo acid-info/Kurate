@@ -3,6 +3,10 @@ import { useRouter } from "next/router";
 import { WalletIcon } from "../Icons/WalletIcon";
 import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
+import { canConnectWallet } from "@/services";
+import { formatAddress } from "@/utils/format";
+import useAdapter from "@/hooks/useAdapter";
+import { useProfileContext } from "@/context/ProfileContext";
 
 type HeaderTopProps = {
   address?: string;
@@ -10,6 +14,8 @@ type HeaderTopProps = {
 
 export default function HeaderTop({ address }: HeaderTopProps) {
   const router = useRouter();
+  const {profile, updateProfile} = useProfileContext();
+  const { adapter } = useAdapter();
 
   const [innerWidth, setInnerWidth] = useState(0);
   const [scrollValue, setScrollValue] = useState<number>(0);
@@ -73,14 +79,14 @@ export default function HeaderTop({ address }: HeaderTopProps) {
                 onClick={() => router.push("/ROUTES.PROFILE")}
               >
                 <WalletIcon color="primary" />
-                <Typography variant="label1">Formatted Address</Typography>
+                <Typography variant="label1">{formatAddress(address)}</Typography>
               </IconButton>
             ) : (
               <IconButton
                 className="button"
                 size="large"
-                onClick={() => console.log("adapter.signIn")}
-                disabled={/*!canConnectWallet()*/ false}
+                onClick={() => adapter?.signIn(profile, updateProfile)}
+                disabled={!canConnectWallet()}
               >
                 <WalletIcon color="primary" />
                 <Typography variant="label1">

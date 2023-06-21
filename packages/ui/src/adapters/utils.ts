@@ -14,8 +14,6 @@ type WindowWithEthereum = Window &
     };
   };
 
-const windowWithEthereum = window && (window as WindowWithEthereum);
-
 function onAccountChanged() {
   const { updateProfile } = useProfileContext();
   const { personaData, updatePersonaData } = usePersonaContext();
@@ -46,6 +44,8 @@ function onAccountChanged() {
 }
 
 export function subscribeAccountChanged(): () => unknown {
+  const windowWithEthereum = window && (window as WindowWithEthereum);
+
   if (
     windowWithEthereum &&
     windowWithEthereum.ethereum &&
@@ -68,6 +68,8 @@ function onChainChanged() {
 }
 
 export function subscribeChainChanged() {
+  const windowWithEthereum = window && (window as WindowWithEthereum);
+
   if (
     windowWithEthereum &&
     windowWithEthereum.ethereum &&

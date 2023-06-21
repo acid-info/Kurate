@@ -6,6 +6,7 @@ import { getFromLocalStorage } from "@/utils";
 import { ZkitterAdapterGodMode } from "./zkitter-god-mode";
 import { DraftPersona, Persona } from "@/interfaces/Persona";
 import { DraftChat } from "@/interfaces/Chat";
+import { Profile } from "@/interfaces/Profile";
 
 export interface Adapter {
   // This is run when the app is mounted and should start app wide subscriptions
@@ -14,7 +15,10 @@ export interface Adapter {
   stop?: () => Promise<void> | void;
 
   // Sign's in user (asks to login with wallet)
-  signIn: () => Promise<void>;
+  signIn: (
+    profile: Profile,
+    updateProfile: (newProfile: Profile) => void
+  ) => Promise<void>;
 
   addPersonaToFavorite: (groupId: string, persona?: Persona) => Promise<void>;
   removePersonaFromFavorite: (
@@ -53,24 +57,21 @@ export interface Adapter {
 
 export const adapters = ["zkitter", "firebase", "zkitter-god-mode"] as const;
 export type AdapterName = (typeof adapters)[number];
-export const adapterName: AdapterName = getFromLocalStorage<AdapterName>(
-  "adapter",
-  ADAPTER as AdapterName
-);
 
-let adapter: Adapter;
-switch (adapterName) {
-  case "zkitter":
-    adapter = new ZkitterAdapter();
-    break;
-  case "firebase":
-    adapter = new Firebase();
-    break;
-  case "zkitter-god-mode":
-    adapter = new ZkitterAdapterGodMode();
-    break;
-  default:
-    throw new Error(`Invalid adapter ${ADAPTER}`);
-}
+export const initAdapter = () => {
+  const adapterName: AdapterName = getFromLocalStorage<AdapterName>(
+    "adapter",
+    ADAPTER as AdapterName
+  );
 
-export default adapter;
+  switch (adapterName) {
+   /* case "zkitter":
+      return { adapter: new ZkitterAdapter(), adapterName };*/
+    case "firebase":
+      return { adapter: new Firebase(), adapterName };
+    /*case "zkitter-god-mode":
+      return { adapter: new ZkitterAdapterGodMode(), adapterName };*/
+    default:
+      throw new Error(`Invalid adapter ${ADAPTER}`);
+  }
+};

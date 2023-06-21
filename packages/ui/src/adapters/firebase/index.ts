@@ -35,7 +35,6 @@ import {
   postFromDB,
   postPendingFromDB,
 } from "./db-adapter";
-import { TokenData } from "@/interfaces/Token";
 import { useTokenContext } from "@/context/TokenContext";
 import { useEffect } from "react";
 import { usePersonaContext } from "@/context/PersonaContext";
@@ -43,6 +42,7 @@ import { useProfileContext } from "@/context/ProfileContext";
 import { useHistoryContext } from "@/context/HistoryContext";
 import { useChatContext } from "@/context/ChatContext";
 import { usePostContext } from "@/context/PostContext";
+import { Profile } from "@/interfaces/Profile";
 
 // FIXME: no idea where whe should put these so that they don't leak. I can limit to some specific origin I guess
 const IPFS_AUTH =
@@ -324,8 +324,10 @@ export class Firebase implements Adapter {
     return personaDoc.id;
   }
 
-  async signIn(): Promise<void> {
-    const { profile, updateProfile } = useProfileContext();
+  async signIn(
+    profile: Profile,
+    updateProfile: (newProfile: Profile) => void
+  ): Promise<void> {
     const signer = await connectWallet();
     const address = await signer.getAddress();
     const userDoc = doc(db, `users/${address}`);
