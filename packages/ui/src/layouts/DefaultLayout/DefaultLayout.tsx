@@ -15,7 +15,7 @@ type LayoutProps = {
   children: ReactNode;
 };
 
-export default function Layout({ children }: LayoutProps) {
+export default function DefaultLayout({ children }: LayoutProps) {
   const { mounted } = useIsMounted();
   const { isDarkState } = useIsDarkState();
 
@@ -36,10 +36,6 @@ export default function Layout({ children }: LayoutProps) {
       </Head>
       <Global
         styles={css`
-          :root {
-            --grey-200: #ececec;
-          }
-
           html {
             scroll-behavior: smooth;
             line-height: 1.25;
@@ -75,7 +71,7 @@ export default function Layout({ children }: LayoutProps) {
             <ChatProvider>
               <HistoryProvider>
                 <TokenProvider>
-                  {children}
+                  <main>{children}</main>
                 </TokenProvider>
               </HistoryProvider>
             </ChatProvider>

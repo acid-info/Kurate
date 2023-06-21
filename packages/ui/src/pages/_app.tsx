@@ -1,15 +1,18 @@
-import InitialLoad from "@/components/Layout/InitialLoad";
 import type { AppProps } from "next/app";
 import { lazy, Suspense } from "react";
+import "../styles/globals.css";
+import InitialLoad from "@/layouts/DefaultLayout/InitialLoad";
 
-const Layout = lazy(() => import("../components/Layout/Layout"));
+const DefaultLayout = lazy(
+  () => import("../layouts/DefaultLayout/DefaultLayout")
+);
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Suspense fallback={<InitialLoad />}>
-      <Layout>
+      <DefaultLayout>
         <Component {...pageProps} />
-      </Layout>
+      </DefaultLayout>
     </Suspense>
   );
 }

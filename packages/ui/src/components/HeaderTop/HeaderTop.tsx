@@ -14,7 +14,7 @@ type HeaderTopProps = {
 
 export default function HeaderTop({ address }: HeaderTopProps) {
   const router = useRouter();
-  const {profile, updateProfile} = useProfileContext();
+  const { profile, updateProfile } = useProfileContext();
   const { adapter } = useAdapter();
 
   const [innerWidth, setInnerWidth] = useState(0);
@@ -80,7 +80,8 @@ export default function HeaderTop({ address }: HeaderTopProps) {
               >
                 <WalletIcon color="primary" />
                 <Typography variant="label1">
-                  <p>{formatAddress(address)}</p></Typography>
+                  <p>{formatAddress(address)}</p>
+                </Typography>
               </IconButton>
             ) : (
               <IconButton
