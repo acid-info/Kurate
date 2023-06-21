@@ -79,7 +79,8 @@ export default function HeaderTop({ address }: HeaderTopProps) {
                 onClick={() => router.push("/ROUTES.PROFILE")}
               >
                 <WalletIcon color="primary" />
-                <Typography variant="label1">{formatAddress(address)}</Typography>
+                <Typography variant="label1">
+                  <p>{formatAddress(address)}</p></Typography>
               </IconButton>
             ) : (
               <IconButton
@@ -90,7 +91,7 @@ export default function HeaderTop({ address }: HeaderTopProps) {
               >
                 <WalletIcon color="primary" />
                 <Typography variant="label1">
-                  {scrollValue === 0 ? "Connect" : ""}
+                  <p>{scrollValue === 0 ? "Connect" : ""}</p>
                 </Typography>
               </IconButton>
             )}
@@ -127,6 +128,10 @@ const Header = styled.header`
   .button {
     width: unset;
     padding: 6px;
+
+    p {
+      cursor: pointer;
+    }
   }
 
   &.scrolled {
