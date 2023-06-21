@@ -7,6 +7,7 @@ import { canConnectWallet } from "@/services";
 import { formatAddress } from "@/utils/format";
 import useAdapter from "@/hooks/useAdapter";
 import { useProfileContext } from "@/context/ProfileContext";
+import useWindow from "@/hooks/useWindow";
 
 type HeaderTopProps = {
   address?: string;
@@ -16,9 +17,8 @@ export default function HeaderTop({ address }: HeaderTopProps) {
   const router = useRouter();
   const { profile, updateProfile } = useProfileContext();
   const { adapter } = useAdapter();
+  const { innerWidth, scrollValue } = useWindow();
 
-  const [innerWidth, setInnerWidth] = useState(0);
-  const [scrollValue, setScrollValue] = useState<number>(0);
   const [padding, setPadding] = useState(0);
 
   const spacerElementRef = useRef<HTMLDivElement>(null);
@@ -27,40 +27,22 @@ export default function HeaderTop({ address }: HeaderTopProps) {
   const contentElementRef = useRef<HTMLDivElement>(null);
   const [clientHeight, setClientHeight] = useState(0);
 
+  const [paddingMax, setPaddingMax] = useState(0);
   const PADDING_MIN = 12;
-  let PADDING_MAX = 48;
 
   useEffect(() => {
-    setInnerWidth(window.innerWidth);
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
-    };
-  });
-
-  useEffect(() => {
-    PADDING_MAX = innerWidth > 688 ? 48 : 24;
-
-    setTopOffset(spacerElementRef.current?.getBoundingClientRect().top ?? 0);
+    setPaddingMax(innerWidth > 688 ? 48 : 24);
+    const newOffset =
+      spacerElementRef.current?.getBoundingClientRect().top ?? 0;
+    setTopOffset(newOffset < 0 ? 0 : newOffset);
 
     const calculatedPadding =
-      Math.max(PADDING_MAX - PADDING_MIN - scrollValue / 2, 0) + PADDING_MIN;
+      Math.max(paddingMax - PADDING_MIN - scrollValue / 2, 0) + PADDING_MIN;
     setPadding(calculatedPadding);
 
     const newClientHeight = contentElementRef.current?.clientHeight ?? 0;
     setClientHeight(newClientHeight);
   }, [scrollValue, innerWidth]);
-
-  const handleScroll = () => {
-    setScrollValue(window.scrollY);
-  };
-
-  const handleResize = () => {
-    setInnerWidth(window.innerWidth);
-  };
 
   return (
     <>
@@ -101,7 +83,7 @@ export default function HeaderTop({ address }: HeaderTopProps) {
       </Header>
       <div
         ref={spacerElementRef}
-        style={{ height: `${clientHeight + PADDING_MAX * 2}px` }}
+        style={{ height: `${clientHeight + paddingMax * 2}px` }}
       />
     </>
   );
@@ -114,6 +96,8 @@ const Header = styled.header`
   right: 0;
   transition: box-shadow 0.2s;
   z-index: 100;
+  background-color: rgba(var(--color-body-bg-rgb), 0.93);
+  backdrop-filter: blur(var(--blur));
 
   .content {
     display: flex;

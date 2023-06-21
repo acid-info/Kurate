@@ -1,6 +1,17 @@
 :root {
   --grey-200: #ececec;
 
+  --color-body-bg-rgb: 255, 255, 255;
+  --color-body-text-rgb: 24, 24, 24;
+
+  --blur: 3px;
+
+  --spacing-3: 3px;
+  --spacing-4: 4px;
+  --spacing-6: 6px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-15: 15px;
   --spacing-24: 24px;
   --spacing-48: 48px;
 }

@@ -46,9 +46,7 @@ export default function HomeLayout({ children }: LayoutProps) {
 
         <Divider visible="mobile" />
 
-        <slot />
-
-        <main>{children}</main>
+        {children}
       </div>
     </div>
   );

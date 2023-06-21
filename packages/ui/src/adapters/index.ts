@@ -4,13 +4,26 @@ import { Firebase } from "./firebase";
 import { ADAPTER } from "@/constants";
 import { getFromLocalStorage } from "@/utils";
 import { ZkitterAdapterGodMode } from "./zkitter-god-mode";
-import { DraftPersona, Persona } from "@/interfaces/Persona";
-import { DraftChat } from "@/interfaces/Chat";
+import { DraftPersona, Persona, PersonaData } from "@/interfaces/Persona";
+import { ChatData, DraftChat } from "@/interfaces/Chat";
 import { Profile } from "@/interfaces/Profile";
+import { TokenData } from "@/interfaces/Token";
+import { HistoryData } from "@/interfaces/Transaction";
+
+export type StartProps = {
+  personaData: PersonaData;
+  profile: Profile;
+  tokenData: TokenData;
+  chatData: ChatData;
+  updatePersonaData: (newPersonaData: PersonaData) => void;
+  updateTokenData: (newTokenData: TokenData) => void;
+  updateHistoryData: (newHistoryData: HistoryData) => void;
+  updateChatData: (newChatData: ChatData) => void;
+};
 
 export interface Adapter {
   // This is run when the app is mounted and should start app wide subscriptions
-  start?: () => Promise<void> | void;
+  start?: (data: StartProps) => Promise<void> | void;
   // This is run when the app unmounts and should clear subscriptions
   stop?: () => Promise<void> | void;
 
@@ -65,7 +78,7 @@ export const initAdapter = () => {
   );
 
   switch (adapterName) {
-   /* case "zkitter":
+    /* case "zkitter":
       return { adapter: new ZkitterAdapter(), adapterName };*/
     case "firebase":
       return { adapter: new Firebase(), adapterName };

@@ -11,7 +11,7 @@ import {
 } from "@/constants";
 import { type Post, type PostPending } from "@/interfaces/Post";
 import { type TransactionRecord } from "@/interfaces/Transaction";
-import type { Adapter } from "..";
+import type { Adapter, StartProps } from "..";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -36,13 +36,11 @@ import {
   postPendingFromDB,
 } from "./db-adapter";
 import { useTokenContext } from "@/context/TokenContext";
-import { useEffect } from "react";
 import { usePersonaContext } from "@/context/PersonaContext";
 import { useProfileContext } from "@/context/ProfileContext";
-import { useHistoryContext } from "@/context/HistoryContext";
-import { useChatContext } from "@/context/ChatContext";
 import { usePostContext } from "@/context/PostContext";
 import { Profile } from "@/interfaces/Profile";
+import { TokenData } from "@/interfaces/Token";
 
 // FIXME: no idea where whe should put these so that they don't leak. I can limit to some specific origin I guess
 const IPFS_AUTH =
@@ -64,22 +62,19 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
-function epochCounter(): () => void {
-  const { tokenData, updateTokenData } = useTokenContext();
+function epochCounter(
+  tokenData: TokenData,
+  updateTokenData: (newTokenData: TokenData) => void
+): () => void {
+  const interval = setInterval(() => {
+    const { epochDuration, ...rest } = tokenData;
+    const newTimeToEpoch = epochDuration - (Date.now() % epochDuration);
+    updateTokenData({ ...rest, epochDuration, timeToEpoch: newTimeToEpoch });
+  }, 1000);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const { epochDuration, ...rest } = tokenData;
-      const newTimeToEpoch = epochDuration - (Date.now() % epochDuration);
-      updateTokenData({ ...rest, epochDuration, timeToEpoch: newTimeToEpoch });
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [updateTokenData]);
-
-  return () => {};
+  return () => {
+    clearInterval(interval);
+  };
 }
 
 export class Firebase implements Adapter {
@@ -97,13 +92,16 @@ export class Firebase implements Adapter {
   private participants = new Map<string, string[]>();
   private postIdParticipant = new Map<string, string>();
 
-  async start() {
-    const { personaData, updatePersonaData } = usePersonaContext();
-    const { profile: p } = useProfileContext();
-    const { tokenData, updateTokenData } = useTokenContext();
-    const { updateHistoryData } = useHistoryContext();
-    const { chatData, updateChatData } = useChatContext();
-
+  async start({
+    personaData,
+    profile,
+    tokenData,
+    chatData,
+    updatePersonaData,
+    updateTokenData,
+    updateHistoryData,
+    updateChatData,
+  }: StartProps) {
     const personasQuery = query(collection(db, "personas"));
     const unsubscribePersonas = onSnapshot(personasQuery, (data) => {
       const all = new Map<string, Persona>();
@@ -119,8 +117,8 @@ export class Firebase implements Adapter {
     this.subscriptions.push(unsubscribePersonas);
 
     const unsubscribeUser = () => {
-      if (p.signer && this.userSubscriptions.length === 0) {
-        const userSnapshot = doc(db, `users/${p.address}`);
+      if (profile.signer && this.userSubscriptions.length === 0) {
+        const userSnapshot = doc(db, `users/${profile.address}`);
         const subscribeTokens = onSnapshot(userSnapshot, (res) => {
           type UserRes = {
             go: number;
@@ -149,7 +147,7 @@ export class Firebase implements Adapter {
 
         const transactionSnapshot = collection(
           db,
-          `users/${p.address}/transactions`
+          `users/${profile.address}/transactions`
         );
         const subscribeTransactions = onSnapshot(transactionSnapshot, (res) => {
           const trns: TransactionRecord[] = [];
@@ -163,7 +161,7 @@ export class Firebase implements Adapter {
 
         const chatsSnapshot = query(
           collection(db, `chats`),
-          where("users", "array-contains", p.address)
+          where("users", "array-contains", profile.address)
         );
         const subscribeChats = onSnapshot(chatsSnapshot, (res) => {
           const newChats = new Map<string, Chat>();
@@ -178,14 +176,14 @@ export class Firebase implements Adapter {
         });
         this.userSubscriptions.push(subscribeChats);
       }
-      if (!p.signer && this.userSubscriptions.length !== 0) {
+      if (!profile.signer && this.userSubscriptions.length !== 0) {
         this.userSubscriptions.forEach((s) => s());
         this.userSubscriptions = [];
       }
     };
 
     this.subscriptions.push(unsubscribeUser);
-    this.subscriptions.push(epochCounter());
+    this.subscriptions.push(epochCounter(tokenData, updateTokenData));
     this.subscriptions.push(subscribeAccountChanged());
     this.subscriptions.push(subscribeChainChanged());
   }
