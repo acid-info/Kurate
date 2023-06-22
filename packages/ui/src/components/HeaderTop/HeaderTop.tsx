@@ -8,6 +8,7 @@ import { formatAddress } from "@/utils/format";
 import useAdapter from "@/hooks/useAdapter";
 import { useProfileContext } from "@/context/ProfileContext";
 import useWindow from "@/hooks/useWindow";
+import { ROUTES } from "@/routes";
 
 type HeaderTopProps = {
   address?: string;
@@ -58,7 +59,7 @@ export default function HeaderTop({ address }: HeaderTopProps) {
               <IconButton
                 className="button"
                 size="large"
-                onClick={() => router.push("/ROUTES.PROFILE")}
+                onClick={() => router.push(ROUTES.PROFILE)}
               >
                 <WalletIcon color="primary" />
                 <Typography variant="label1">

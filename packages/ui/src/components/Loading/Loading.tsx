@@ -1,6 +1,6 @@
 import useWindow from "@/hooks/useWindow";
 import styled from "@emotion/styled";
-import React, { ReactNode } from "react";
+import React from "react";
 import Header from "../Header/Header";
 
 type LoadingProps = {
@@ -113,11 +113,11 @@ const LoadingScreen = styled.div`
         animation-iteration-count: infinite;
       }
 
-      &:nth-child(2)::before {
+      &:nth-of-type(2)::before {
         animation-delay: 0.7s;
       }
 
-      &:nth-child(3)::before {
+      &:nth-of-type(3)::before {
         animation-delay: 1.4s;
       }
     }

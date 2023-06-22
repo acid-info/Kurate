@@ -1,25 +1,13 @@
 import { NextPage } from "next";
 import HomeLayout from "@/layouts/HomeLayout/HomeLayout";
 import { usePersonaContext } from "@/context/PersonaContext";
-import { useProfileContext } from "@/context/ProfileContext";
 import Loading from "../Loading/Loading";
+import DraftPersonas from "../Persona/DraftPersonas/DraftPersonas";
+import Favorites from "../Persona/Favorites/Favorites";
+import AllPersonas from "../Persona/AllPersonas/AllPersonas";
 
 const Home: NextPage = () => {
-  const { profile } = useProfileContext();
   const { personaData } = usePersonaContext();
-
-  const renderDraftPersonas = () => {
-    if (personaData.draft.length !== 0 && profile.signer) {
-      return <div>DRAFT PERSONAS</div>;
-    }
-    return null;
-  };
-
-  const renderFavorites = () => {
-    if (personaData.favorite.length !== 0 && profile.signer) {
-      return <div>FAVORITES</div>;
-    }
-  };
 
   return (
     <HomeLayout>
@@ -30,7 +18,11 @@ const Home: NextPage = () => {
           }}
         </Loading>
       ) : (
-        (renderDraftPersonas(), renderFavorites())
+        <>
+          <DraftPersonas />
+          <Favorites />
+          <AllPersonas />
+        </>
       )}
     </HomeLayout>
   );
