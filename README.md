@@ -85,7 +85,7 @@ PUBLIC_RELAYER_URL=...
 
 2. Start relayer
 ```sh
-cd packages/contracts
+cd packages/relayer
 ```
 Set the environment variables according to the contract deployment (for private key you can use any hardhat key). Should be:
 ```sh

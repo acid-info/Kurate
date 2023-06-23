@@ -11,7 +11,7 @@ export default function useAdapter() {
   const [adapterName, setAdapterName] = useState<AdapterName>();
 
   const { personaData, updatePersonaData } = usePersonaContext();
-  const { profile } = useProfileContext();
+  const { profile, updateProfile } = useProfileContext();
   const { tokenData, updateTokenData } = useTokenContext();
   const { updateHistoryData } = useHistoryContext();
   const { chatData, updateChatData } = useChatContext();
@@ -26,6 +26,7 @@ export default function useAdapter() {
       profile,
       tokenData,
       chatData,
+      updateProfile,
       updatePersonaData,
       updateTokenData,
       updateHistoryData,

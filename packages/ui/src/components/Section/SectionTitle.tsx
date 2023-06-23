@@ -16,6 +16,7 @@ export default function SectionTitle({
   const Buttons = ({ children }: any) => (
     <div className="buttons">{children}</div>
   );
+  const Searchbar = ({ children }: any) => <div>{children}</div>;
 
   return (
     <div>
@@ -25,6 +26,8 @@ export default function SectionTitle({
           <Title>{children.title}</Title>
           <Buttons>{children.buttons}</Buttons>
         </div>
+
+        <Searchbar>{children.searchbar}</Searchbar>
       </Wrapper>
 
       <Divider visible="mobile" />

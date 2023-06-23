@@ -19,6 +19,7 @@ const HR = styled.hr`
       display: none;
     }
   }
+
   &.mobile {
     @media (min-width: 688px) {
       display: none;

@@ -16,6 +16,8 @@ import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import Persona from "../Persona";
 import styled from "@emotion/styled";
+import Searchbar from "@/components/Searchbar/Searchbar";
+import { useSearchContext } from "@/context/SearchContext";
 
 interface SortByOption {
   value: SortBy;
@@ -26,6 +28,7 @@ export default function AllPersonas() {
   const router = useRouter();
   const { profile } = useProfileContext();
   const { personaData } = usePersonaContext();
+  const { query } = useSearchContext();
 
   const sortByOptions: SortByOption[] = [
     { value: "date", name: "Sort by date of creation" },
@@ -39,10 +42,10 @@ export default function AllPersonas() {
   const [sortAsc, setSortAsc] = useState<boolean>(false);
 
   const filteredSortedPersonas = useMemo(() => {
-    const filteredPersonas = [...personaData.all]; /*.filter(([, persona]) =>
-      persona.name.toLowerCase().includes(filterQuery.toLowerCase())
+    const filteredPersonas = [...personaData.all].filter(([, persona]) =>
+      persona.name.toLowerCase().includes(query.toLowerCase())
     );
-*/
+
     return filteredPersonas.sort(([, a], [, b]) => {
       switch (sortBy) {
         case "date":
@@ -69,7 +72,7 @@ export default function AllPersonas() {
           return 0;
       }
     });
-  }, [personaData.all, /*filterQuery,*/ sortBy, sortAsc]);
+  }, [personaData.all, query, sortBy, sortAsc]);
 
   return (
     <Wrapper>
@@ -102,6 +105,7 @@ export default function AllPersonas() {
               </IconButton>
             </>
           ),
+          searchbar: <Searchbar />,
         }}
       </SectionTitle>
 
@@ -134,9 +138,5 @@ const Wrapper = styled.div`
     s p {
       cursor: pointer;
     }
-  }
-
-  .lsd-card {
-    padding: var(--spacing-24);
   }
 `;

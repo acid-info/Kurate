@@ -2,14 +2,15 @@ import { ReactNode } from "react";
 import { defaultThemes, ThemeProvider } from "@acid-info/lsd-react";
 import { css, Global } from "@emotion/react";
 import Head from "next/head";
-import useIsDarkState from "@/hooks/useIsDarkState";
 import { ProfileProvider } from "@/context/ProfileContext";
 import { ChatProvider } from "@/context/ChatContext";
 import { PostProvider } from "@/context/PostContext";
 import { PersonaProvider } from "@/context/PersonaContext";
 import { HistoryProvider } from "@/context/HistoryContext";
 import { TokenProvider } from "@/context/TokenContext";
+import { SearchProvider } from "@/context/SearchContext";
 import useIsMounted from "@/hooks/useIsMounted";
+import useIsDarkState from "@/hooks/useIsDarkState";
 
 type LayoutProps = {
   children: ReactNode;
@@ -71,7 +72,9 @@ export default function DefaultLayout({ children }: LayoutProps) {
             <ChatProvider>
               <HistoryProvider>
                 <TokenProvider>
-                  <main>{children}</main>
+                  <SearchProvider>
+                    <main>{children}</main>
+                  </SearchProvider>
                 </TokenProvider>
               </HistoryProvider>
             </ChatProvider>

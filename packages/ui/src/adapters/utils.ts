@@ -1,9 +1,8 @@
-import { useChatContext } from "@/context/ChatContext";
-import { useHistoryContext } from "@/context/HistoryContext";
-import { usePersonaContext } from "@/context/PersonaContext";
-import { useProfileContext } from "@/context/ProfileContext";
-import { useTokenContext } from "@/context/TokenContext";
-import { type Chat } from "@/interfaces/Chat";
+import { ChatData, type Chat } from "@/interfaces/Chat";
+import { PersonaData } from "@/interfaces/Persona";
+import { Profile } from "@/interfaces/Profile";
+import { TokenData } from "@/interfaces/Token";
+import { HistoryData } from "@/interfaces/Transaction";
 import type { providers } from "ethers";
 
 type WindowWithEthereum = Window &
@@ -14,13 +13,25 @@ type WindowWithEthereum = Window &
     };
   };
 
-function onAccountChanged() {
-  const { updateProfile } = useProfileContext();
-  const { personaData, updatePersonaData } = usePersonaContext();
-  const { tokenData, updateTokenData } = useTokenContext();
-  const { updateChatData } = useChatContext();
-  const { updateHistoryData } = useHistoryContext();
+type ContextProps = {
+  personaData: PersonaData;
+  tokenData: TokenData;
+  updateProfile: (newProfile: Profile) => void;
+  updatePersonaData: (newPersonaData: PersonaData) => void;
+  updateTokenData: (newTokenData: TokenData) => void;
+  updateChatData: (newChatData: ChatData) => void;
+  updateHistoryData: (newHistoryData: HistoryData) => void;
+};
 
+function onAccountChanged({
+  personaData,
+  tokenData,
+  updateProfile,
+  updatePersonaData,
+  updateTokenData,
+  updateChatData,
+  updateHistoryData,
+}: ContextProps) {
   // Clear profile
   updateProfile({});
 
@@ -43,7 +54,15 @@ function onAccountChanged() {
   updateHistoryData({ transactions: [] });
 }
 
-export function subscribeAccountChanged(): () => unknown {
+export function subscribeAccountChanged({
+  personaData,
+  tokenData,
+  updateProfile,
+  updatePersonaData,
+  updateTokenData,
+  updateChatData,
+  updateHistoryData,
+}: ContextProps): () => unknown {
   const windowWithEthereum = window && (window as WindowWithEthereum);
 
   if (
@@ -51,12 +70,29 @@ export function subscribeAccountChanged(): () => unknown {
     windowWithEthereum.ethereum &&
     typeof windowWithEthereum.ethereum.on === "function"
   ) {
-    windowWithEthereum.ethereum.on("accountsChanged", onAccountChanged);
+    windowWithEthereum.ethereum.on("accountsChanged", () =>
+      onAccountChanged({
+        personaData,
+        tokenData,
+        updateProfile,
+        updatePersonaData,
+        updateTokenData,
+        updateChatData,
+        updateHistoryData,
+      })
+    );
     return () => {
       windowWithEthereum &&
-        windowWithEthereum.ethereum.removeListener(
-          "accountsChanged",
-          onAccountChanged
+        windowWithEthereum.ethereum.removeListener("accountsChanged", () =>
+          onAccountChanged({
+            personaData,
+            tokenData,
+            updateProfile,
+            updatePersonaData,
+            updateTokenData,
+            updateChatData,
+            updateHistoryData,
+          })
         );
     };
   }

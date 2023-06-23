@@ -15,6 +15,7 @@ export type StartProps = {
   profile: Profile;
   tokenData: TokenData;
   chatData: ChatData;
+  updateProfile: (newProfile: Profile) => void;
   updatePersonaData: (newPersonaData: PersonaData) => void;
   updateTokenData: (newTokenData: TokenData) => void;
   updateHistoryData: (newHistoryData: HistoryData) => void;

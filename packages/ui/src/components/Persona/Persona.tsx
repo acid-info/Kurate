@@ -27,35 +27,48 @@ export default function Persona({
   const { adapter } = useAdapter();
 
   return (
-    <Card onClick={onClick} size="large">
-      <CardHeader>
-        <Picture>
-          <img
-            src={picture ? adapter?.getPicture(picture) : undefined}
-            alt="persona"
-          />
-        </Picture>
-      </CardHeader>
-      <CardBody>
-        <Details>
-          <div className="header">{name}</div>
-          <div className="description">{pitch}</div>
-          <div className="post-count">
-            <div className="rep">REP {minReputation}+</div>
-            <div>
-              <UserMultipleIcon />
-              {participantsCount}
+    <Wrapper>
+      <Card onClick={onClick} size="large">
+        <CardHeader>
+          <Picture>
+            <img
+              src={picture ? adapter?.getPicture(picture) : undefined}
+              alt="persona"
+            />
+          </Picture>
+        </CardHeader>
+        <CardBody>
+          <Details>
+            <div className="header">{name}</div>
+            <div className="description">{pitch}</div>
+            <div className="post-count">
+              <div className="rep">REP {minReputation}+</div>
+              <div>
+                <UserMultipleIcon />
+                {participantsCount}
+              </div>
+              <div>
+                <ForumIcon />
+                {postsCount}
+              </div>
             </div>
-            <div>
-              <ForumIcon />
-              {postsCount}
-            </div>
-          </div>
-        </Details>
-      </CardBody>
-    </Card>
+          </Details>
+        </CardBody>
+      </Card>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  .lsd-card {
+    padding: var(--spacing-24);
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--grey-150);
+    }
+  }
+`;
 
 const Picture = styled.div`
   flex: 0 0 100px;
@@ -82,28 +95,17 @@ const Details = styled.div`
     min-height: 99px;
   }
 
-  /*.header {
-    font-size: var(--font-size-lg);
-    font-weight: 600;
-  }*/
-
   .description {
-    /*font-size: var(--font-size-normal);*/
     flex-grow: 1;
   }
 
   .post-count {
-    /*font-size: var(--font-size-normal);*/
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
     gap: var(--spacing-12);
-
-    /*@media (min-width: 398px) {
-      font-size: var(--font-size-sm);
-    }*/
 
     > div {
       display: flex;
@@ -117,7 +119,6 @@ const Details = styled.div`
     .rep {
       background-color: var(--grey-200);
       border-radius: 9px;
-      /*font-weight: var(--font-weight-sb);*/
       padding-left: var(--spacing-6);
       padding-right: var(--spacing-4);
       padding-top: 1px;

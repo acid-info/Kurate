@@ -130,15 +130,6 @@ const HeaderWrapper = styled.header`
     }
   }
 
-  /*.title {
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 18px;
-    font-style: normal;
-    text-align: center;
-    line-height: 245%;
-  }*/
-
   // Hide header when not scrolled
   &.initially-hidden {
     display: none;
@@ -148,9 +139,5 @@ const HeaderWrapper = styled.header`
     transition: box-shadow 0.2s, padding 0.2s;
     box-shadow: 0 1px 5px 0 rgba(var(--color-body-text-rgb), 0.25);
     display: initial;
-
-    // @media (prefers-color-scheme: dark) {
-    // 	box-shadow: 0 1px 5px 0 rgba(var(--color-body-bg-rgb), 0.75);
-    // }
   }
 `;

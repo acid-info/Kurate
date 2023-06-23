@@ -97,6 +97,7 @@ export class Firebase implements Adapter {
     profile,
     tokenData,
     chatData,
+    updateProfile,
     updatePersonaData,
     updateTokenData,
     updateHistoryData,
@@ -184,7 +185,7 @@ export class Firebase implements Adapter {
 
     this.subscriptions.push(unsubscribeUser);
     this.subscriptions.push(epochCounter(tokenData, updateTokenData));
-    this.subscriptions.push(subscribeAccountChanged());
+    this.subscriptions.push(subscribeAccountChanged({personaData, tokenData, updateProfile, updatePersonaData, updateTokenData, updateChatData, updateHistoryData}));
     this.subscriptions.push(subscribeChainChanged());
   }
 
