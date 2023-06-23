@@ -135,7 +135,8 @@ const Wrapper = styled.div`
   .button {
     width: unset;
     padding: 6px;
-    s p {
+    
+    p {
       cursor: pointer;
     }
   }
