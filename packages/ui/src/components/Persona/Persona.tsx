@@ -1,6 +1,6 @@
 import useAdapter from "@/hooks/useAdapter";
 import { ReputationOptions } from "@/types";
-import { Card, CardBody, CardHeader } from "@acid-info/lsd-react";
+import { Card, CardBody, CardHeader, Typography } from "@acid-info/lsd-react";
 import styled from "@emotion/styled";
 import { UserMultipleIcon } from "../Icons/UserMultipleIcon";
 import { ForumIcon } from "../Icons/ForumIcon";
@@ -39,18 +39,22 @@ export default function Persona({
         </CardHeader>
         <CardBody>
           <Details>
-            <div className="header">{name}</div>
-            <div className="description">{pitch}</div>
+            <Typography variant="h4">{name}</Typography>
+            <Typography className="description" variant="body1">
+              {pitch}
+            </Typography>
             <div className="post-count">
-              <div className="rep">REP {minReputation}+</div>
-              <div>
+              <Typography className="rep" variant="body1">
+                REP {minReputation}+
+              </Typography>
+              <Typography variant="body1" component="div">
                 <UserMultipleIcon />
                 {participantsCount}
-              </div>
-              <div>
+              </Typography>
+              <Typography variant="body1" component="div">
                 <ForumIcon />
                 {postsCount}
-              </div>
+              </Typography>
             </div>
           </Details>
         </CardBody>
