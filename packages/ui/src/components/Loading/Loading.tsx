@@ -2,6 +2,7 @@ import useWindow from "@/hooks/useWindow";
 import styled from "@emotion/styled";
 import React from "react";
 import Header from "../Header/Header";
+import { Typography } from "@acid-info/lsd-react";
 
 type LoadingProps = {
   title?: string;
@@ -20,9 +21,11 @@ export default function Loading({
 }: LoadingProps) {
   const { scrollValue } = useWindow();
 
-  const Title = ({ children }: any) => <div className="title">{children}</div>;
+  const Title = ({ children }: any) => (
+    <Typography variant="body1">{children}</Typography>
+  );
   const Description = ({ children }: any) => (
-    <div className="description">{children}</div>
+    <Typography variant="body1">{children}</Typography>
   );
   const ButtonGroup = ({ children }: any) => (
     <div className="btns">{children}</div>
@@ -123,11 +126,6 @@ const LoadingScreen = styled.div`
     }
   }
 
-  .title {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-sb);
-  }
-
   .btns {
     margin-top: var(--spacing-48);
     display: flex;
@@ -135,9 +133,5 @@ const LoadingScreen = styled.div`
     align-items: center;
     justify-content: center;
     gap: var(--spacing-12);
-  }
-
-  :global(.small) {
-    font-size: var(--font-size-sm);
   }
 `;

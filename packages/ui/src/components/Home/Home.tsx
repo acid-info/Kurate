@@ -14,7 +14,7 @@ const Home: NextPage = () => {
       {personaData.loading ? (
         <Loading fullPage>
           {{
-            title: <p>Loading Kurate homepage</p>,
+            title: "Loading Kurate homepage",
           }}
         </Loading>
       ) : (

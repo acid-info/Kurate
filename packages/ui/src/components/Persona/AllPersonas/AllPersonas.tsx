@@ -78,7 +78,7 @@ export default function AllPersonas() {
     <Wrapper>
       <SectionTitle>
         {{
-          title: <p>All Personas</p>,
+          title: "All Personas",
           buttons: (
             <>
               {profile.signer && (
@@ -88,9 +88,7 @@ export default function AllPersonas() {
                   onClick={() => router.push(ROUTES.PERSONA_NEW)}
                 >
                   <AddIcon color="primary" />
-                  <Typography variant="label1">
-                    <p>Create persona</p>
-                  </Typography>
+                  <Typography variant="label1">Create persona</Typography>
                 </IconButton>
               )}
 
@@ -124,7 +122,7 @@ export default function AllPersonas() {
             />
           ))
         ) : (
-          <p>There are no personas yet</p>
+          <Typography variant="body1">There are no personas yet</Typography>
         )}
       </Grid>
     </Wrapper>
@@ -135,8 +133,8 @@ const Wrapper = styled.div`
   .button {
     width: unset;
     padding: 6px;
-    
-    p {
+
+    label {
       cursor: pointer;
     }
   }

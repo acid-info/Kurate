@@ -16,16 +16,14 @@ export default function DraftPersonas() {
     <>
       <SectionTitle>
         {{
-          title: <p>Draft Personas</p>,
+          title: "Draft Personas",
           buttons: (
             <IconButton
               size="large"
               onClick={() => router.push(ROUTES.PERSONA_NEW)}
             >
               <AddIcon color="primary" />
-              <Typography variant="label1">
-                <p>Create persona</p>
-              </Typography>
+              <Typography variant="label1">Create persona</Typography>
             </IconButton>
           ),
         }}

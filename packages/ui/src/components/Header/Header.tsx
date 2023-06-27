@@ -1,5 +1,5 @@
 import useWindow from "@/hooks/useWindow";
-import { CloseIcon, IconButton } from "@acid-info/lsd-react";
+import { CloseIcon, IconButton, Typography } from "@acid-info/lsd-react";
 import styled from "@emotion/styled";
 import { useEffect, useRef, useState } from "react";
 import { UndoIcon } from "../Icons/UndoIcon";
@@ -62,7 +62,7 @@ export default function Header({
             </div>
           )}
 
-          <h1>{title}</h1>
+          <Typography variant="h1">{title}</Typography>
 
           {typeof onClose === "function" && (
             <div>

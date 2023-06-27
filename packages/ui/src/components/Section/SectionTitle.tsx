@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import Divider from "../Divider/Divider";
+import { Typography } from "@acid-info/lsd-react";
 
 type SectionTitleProps = {
   children: any;
@@ -12,7 +13,11 @@ export default function SectionTitle({
   noDivider,
   noPad,
 }: SectionTitleProps) {
-  const Title = ({ children }: any) => <div className="title">{children}</div>;
+  const Title = ({ children }: any) => (
+    <Typography className="title" variant="h6">
+      {children}
+    </Typography>
+  );
   const Buttons = ({ children }: any) => (
     <div className="buttons">{children}</div>
   );
@@ -76,8 +81,6 @@ const Wrapper = styled.div`
     gap: var(--spacing-12);
 
     .title {
-      font-size: var(--font-size-lg);
-      font-weight: var(--font-weight-sb);
       transition: padding 0.2s;
       max-width: 498px;
       border-bottom: none;

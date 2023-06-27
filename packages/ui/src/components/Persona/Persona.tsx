@@ -39,7 +39,7 @@ export default function Persona({
         </CardHeader>
         <CardBody>
           <Details>
-            <Typography variant="h4">{name}</Typography>
+            <Typography variant="h5">{name}</Typography>
             <Typography className="description" variant="body1">
               {pitch}
             </Typography>

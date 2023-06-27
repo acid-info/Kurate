@@ -52,7 +52,7 @@ export default function HeaderTop({ address }: HeaderTopProps) {
         style={{ marginTop: `${topOffset}px`, padding: `${padding}px` }}
       >
         <div className="content" ref={contentElementRef}>
-          <h1>Kurate</h1>
+          <Typography variant="h1">Kurate</Typography>
 
           <div>
             {address ? (
@@ -63,7 +63,7 @@ export default function HeaderTop({ address }: HeaderTopProps) {
               >
                 <WalletIcon color="primary" />
                 <Typography variant="label1">
-                  <p>{formatAddress(address)}</p>
+                  {formatAddress(address)}
                 </Typography>
               </IconButton>
             ) : (
@@ -75,7 +75,7 @@ export default function HeaderTop({ address }: HeaderTopProps) {
               >
                 <WalletIcon color="primary" />
                 <Typography variant="label1">
-                  <p>{scrollValue === 0 ? "Connect" : ""}</p>
+                  {scrollValue === 0 ? "Connect" : ""}
                 </Typography>
               </IconButton>
             )}
@@ -115,7 +115,7 @@ const Header = styled.header`
     width: unset;
     padding: 6px;
 
-    p {
+    label {
       cursor: pointer;
     }
   }

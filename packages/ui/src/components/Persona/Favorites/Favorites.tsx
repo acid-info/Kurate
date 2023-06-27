@@ -15,7 +15,7 @@ export default function Favorites() {
     <>
       <SectionTitle>
         {{
-          title: <p>Favorites</p>,
+          title: "Favorites",
         }}
       </SectionTitle>
       <Grid>
