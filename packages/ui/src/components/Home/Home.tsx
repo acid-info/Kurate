@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { ReactNode } from "react";
 import HomeLayout from "@/layouts/HomeLayout/HomeLayout";
 import { usePersonaContext } from "@/context/PersonaContext";
 import Loading from "../Loading/Loading";
@@ -6,11 +6,11 @@ import DraftPersonas from "../Persona/DraftPersonas/DraftPersonas";
 import Favorites from "../Persona/Favorites/Favorites";
 import AllPersonas from "../Persona/AllPersonas/AllPersonas";
 
-const Home: NextPage = () => {
+const Home = () => {
   const { personaData } = usePersonaContext();
 
   return (
-    <HomeLayout>
+    <>
       {personaData.loading ? (
         <Loading fullPage>
           {{
@@ -24,7 +24,12 @@ const Home: NextPage = () => {
           <AllPersonas />
         </>
       )}
-    </HomeLayout>
+    </>
   );
 };
+
+Home.getLayout = function getLayout(page: ReactNode) {
+  return <HomeLayout>{page}</HomeLayout>;
+};
+
 export default Home;
