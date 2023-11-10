@@ -16,13 +16,13 @@ dotenvConfig({ path: resolve(__dirname, "../../.env") })
 function getNetworks(): NetworksUserConfig {
     const networks: NetworksUserConfig = {
         localhost: {
-            url: 'http://127.0.0.1:8545',
+            url: 'http://0.0.0.0:8545',
             chainId: 31337
         },
         docker: {
           url: 'http://contracts:8545',
           chainId: 31337
-        }
+        },
     }
 
     if (process.env.ETHEREUM_URL && process.env.ETHEREUM_PRIVATE_KEY) {
@@ -34,6 +34,12 @@ function getNetworks(): NetworksUserConfig {
                 chainId: 421613,
                 accounts: [process.env.ETHEREUM_PRIVATE_KEY],
             },
+            sepolia: {
+              url: 'https://rpc.sepolia.org',
+              chainId: 11155111,
+              accounts: [process.env.ETHEREUM_PRIVATE_KEY]
+            }
+
         }
     }
     return networks
