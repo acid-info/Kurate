@@ -8,17 +8,15 @@ RUN corepack enable && \
 
 # Layer for package installs
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /usr/src/app/
-COPY packages/contracts/package.json /usr/src/app/packages/contracts/
-COPY packages/relayer/package.json /usr/src/app/packages/relayer/
+COPY packages/ui/package.json /usr/src/app/packages/ui/
 RUN pnpm install
 
-# Layer for contract package
-COPY packages/contracts/ /usr/src/app/packages/contracts
-RUN pnpm run --filter contracts compile
-
 # Layer for relayer package
-COPY packages/relayer/ /usr/src/app/packages/relayer
-RUN pnpm run --filter relayer build
+COPY packages/ui/ /usr/src/app/packages/ui
+
+WORKDIR /usr/src/app/packages/ui
+
+RUN pnpm run build
 
 # Final image
 FROM node:18-alpine
@@ -28,13 +26,10 @@ RUN corepack enable && \
 
 ENV NODE_ENV production
 USER node
-WORKDIR /usr/src/app/packages/relayer
+WORKDIR /usr/src/app/packages/ui
 
 COPY --chown=node:node --from=build /usr/local/bin/pnpm /usr/local/bin/pnpm
 COPY --chown=node:node --from=build /usr/local/lib  /usr/local/lib
 COPY --chown=node:node --from=build /usr/src/app/ /usr/src/app/
 
-RUN cp -r /usr/src/app/packages/contracts/node_modules/* /usr/src/app/packages/relayer/node_modules/
-
-#RUN pnpm build
-CMD ["pnpm", "start"]
+CMD ["pnpm", "preview", "--host" ,"0.0.0.0", "--port", "5173"]
