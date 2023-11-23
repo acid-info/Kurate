@@ -35,7 +35,7 @@ function getNetworks(): NetworksUserConfig {
                 accounts: [process.env.ETHEREUM_PRIVATE_KEY],
             },
             sepolia: {
-              url: 'https://rpc.sepolia.org',
+              url: process.env.ETHEREUM_URL,
               chainId: 11155111,
               accounts: [process.env.ETHEREUM_PRIVATE_KEY]
             }
