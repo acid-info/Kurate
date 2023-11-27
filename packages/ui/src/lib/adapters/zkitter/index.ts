@@ -26,16 +26,11 @@ import type { ZkIdentity } from '@zk-kit/identity'
 import type { GlobalAnonymousFeed } from '../../assets/typechain'
 import { getFromLocalStorage } from '../../utils'
 import type { ReputationProof, UserStateTransitionProof } from '@unirep/circuits'
-import { GLOBAL_ANONYMOUS_FEED_ADDRESS, RELAYER_URL } from '../../constants'
-
-// FIXME: no idea where whe should put these so that they don't leak. I can limit to some specific origin I guess
-const IPFS_AUTH =
-	'Basic Mk5Nbk1vZUNSTWMyOTlCQjYzWm9QZzlQYTU3OjAwZTk2MmJjZTBkZmQxZWQxNGNhNmY1M2JiYjYxMTli'
-const IPFS_GATEWAY = 'https://kurate.infura-ipfs.io/ipfs'
+import { GLOBAL_ANONYMOUS_FEED_ADDRESS, RELAYER_URL, IPFS_AUTH, IPFS_GATEWAY, IPFS_HOST } from '../../constants'
 
 export class ZkitterAdapter implements Adapter {
 	protected ipfs = create({
-		host: 'ipfs.infura.io',
+		host: IPFS_HOST,
 		port: 5001,
 		protocol: 'https',
 		headers: {
