@@ -38,20 +38,28 @@ import {
 	postFromDB,
 	postPendingFromDB,
 } from './db-adapter'
-
-// FIXME: no idea where whe should put these so that they don't leak. I can limit to some specific origin I guess
-const IPFS_AUTH =
-	'Basic Mk5Nbk1vZUNSTWMyOTlCQjYzWm9QZzlQYTU3OjAwZTk2MmJjZTBkZmQxZWQxNGNhNmY1M2JiYjYxMTli'
-const IPFS_GATEWAY = 'https://kurate.infura-ipfs.io/ipfs'
+import { 
+  GLOBAL_ANONYMOUS_FEED_ADDRESS, 
+  RELAYER_URL,
+  IPFS_AUTH,
+  IPFS_GATEWAY,
+  IPFS_HOST,
+  FIREBASE_PROJECT_ID,
+  FIREBASE_API_KEY,
+  FIREBASE_DOMAIN,
+  FIREBASE_STORAGE_BUCKET,
+  FIREBASE_APP_ID,
+  FIREBASE_MSG_SENDER_ID
+} from '../../constants'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-	apiKey: 'AIzaSyDH2EKqPTP3MSJKd1jeHfZsiqs2MxxqaUs',
-	authDomain: 'kurate-demo.firebaseapp.com',
-	projectId: 'kurate-demo',
-	storageBucket: 'kurate-demo.appspot.com',
-	messagingSenderId: '705467445059',
-	appId: '1:705467445059:web:e848928a33d2a27b7b49f6',
+	apiKey: "AIzaSyCCVZaY-OmdCb-9ARrYq-kQSVvAV0jvHo8", 
+	authDomain: "kurate-7a801.firebaseapp.com", 
+	projectId: "11620936600",
+	storageBucket: "kurate-7a801.appspot.com",
+	messagingSenderId: "11620936600",
+	appId: "1:11620936600:web:8146df29f8761a1dd1d9ed0",
 }
 
 // Initialize Firebase
@@ -75,7 +83,7 @@ function epochCounter(): () => unknown {
 
 export class Firebase implements Adapter {
 	private ipfs = create({
-		host: 'ipfs.infura.io',
+		host: IPFS_HOST,
 		port: 5001,
 		protocol: 'https',
 		headers: {
